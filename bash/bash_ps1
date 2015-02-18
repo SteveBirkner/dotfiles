@@ -1,0 +1,121 @@
+# Fill with minuses
+# (this is recalculated every time the prompt is shown in function prompt_command):
+fill="--- "
+
+reset_style='\[\033[00m\]'
+status_style=$reset_style'\[\033[0;90m\]' # gray color; use 0;37m for lighter color
+prompt_style=$reset_style
+command_style=$reset_style'\[\033[1;29m\]' # bold black
+
+#function parse_git_branch () {
+#  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+#}
+
+#RED='\[\033[0;31m\]'
+#YELLOW='\[\033[0;33m\]'
+#GREEN='\[\033[0;32m\]'
+#NO_COLOUR='\[\033[0m\]'
+#PS1="$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "
+
+# Prompt variable:
+#PS1="$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "
+#PS1="$status_style"'$fill \t\n'"$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "$command_style 
+
+#PS1="$status_style"'$fill \t\n'"$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "
+
+
+
+################################################
+# Git prompt
+#
+# 2013-06-25 amagoon@northps.com: added statuses
+#
+# point to this file in your ~/.bash_profile
+# e.g.:
+# 
+#    # Git prompt
+#    if [ -f "$HOME/.bash_ps1" ]; then
+#     . "$HOME/.bash_ps1"
+#    fi
+#
+# After (branch name), you'll see one or more of
+#   + uncommitted changes
+#   * unstaged changes
+#   _ untracked files
+#   1 number of stashes for this branch
+#
+################################################
+
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[0;33m\]"
+GREEN="\[\033[0;32m\]"
+BRIGHTGREEN="\[\033[1;32m\]"
+BLUE="\[\033[1;34m\]"
+MAGENTA="\[\033[0;35m\]"
+NO_COLOUR="\[\033[0m\]"
+PROMPT_CHAR='$ '
+
+# Change git color if branch is dirty
+function parse_git_staged() {
+    local git_status="`git status -unormal 2>&1`"
+    if [[ "$git_status" =~ Changes\ to\ be\ committed ]] ; then
+        echo -n "+"
+    fi
+}
+
+function parse_git_unstaged() {
+    local git_status="`git status -unormal 2>&1`"
+    if [[ "$git_status" =~ Changes\ not\ staged\ for\ commit ]] ; then
+        echo -n "*"
+    fi
+}
+
+function parse_git_untracked() {
+    local git_status="`git status -unormal 2>&1`"
+    if [[ "$git_status" =~ Untracked\ files ]] ; then
+        echo -n "-"
+    fi
+}
+
+# Show the branch name in parens
+function parse_git_branch () {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+# Show count of stashes for this branch
+function parse_git_stashes () {
+  git stash list 2> /dev/null | grep "n `git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`:" | wc -l | sed 's/^ *//' | sed 's/ *$//' | sed 's/^0$//'
+}
+
+PS1="$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$BRIGHTGREEN\$(parse_git_staged)$YELLOW\$(parse_git_unstaged)$RED\$(parse_git_untracked)$BLUE\$(parse_git_stashes)$NO_COLOUR${PROMPT_CHAR}"
+
+
+
+
+# Reset color for command output
+# (this one is invoked every time before a command is executed):
+trap 'echo -ne "\033[00m"' DEBUG
+
+function prompt_command {
+  
+  # create a $fill of all screen width minus the time string and a space:
+  let fillsize=${COLUMNS}-9
+  fill=""
+  while [ "$fillsize" -gt "0" ]
+    do
+    fill="-${fill}" # fill with underscores to work on
+    let fillsize=${fillsize}-1
+  done
+
+  # If this is an xterm set the title to user@host:dir
+  case "$TERM" in
+    xterm*|rxvt*)
+    bname=`basename "${PWD/$HOME/~}"`
+    echo -ne "\033]0;${bname}: ${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"
+    ;;
+    *)
+  ;;
+  esac
+}
+
+PROMPT_COMMAND=prompt_command

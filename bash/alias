@@ -1,0 +1,31 @@
+#alias
+
+alias cd..="cd .."
+alias cd...="cd ../.."
+alias cd....="cd ../../.."
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+alias l='ls -GFh' # Display One File Per Line
+alias la='ls -lhAF' # Display file size in human readable format. Display Hidden Files
+alias ll='ls -lhF' # Display file size in human readable format. Don't Display Hidden Files
+alias lt="ls -lhFt" # Order files based on last modified time
+alias ltr="ls -lhFtr" # Order files based on last modified time in reverse order
+alias l.="ls -lhtrdF .*" #Order invisible files oldest to newest.
+alias lz="ls -lhSt"
+alias f="open ."
+alias myip="curl ip.appspot.com"
+# Git
+alias ga="git add"
+alias gaa="git add ."
+alias gc="git commit -m"
+alias gp="git push"
+alias gs="git status"
+alias gl="git log"
+alias gi="git init"
+
+
+function sbcom() {
+  ssh -l root stevenbirkner.com
+}

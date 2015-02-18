@@ -1,0 +1,3 @@
+#enviorment
+
+export PATH="~/bin:$PATH:/Applications/DevDesktop/drush"
