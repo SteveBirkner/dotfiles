@@ -19,7 +19,7 @@ command_style=$reset_style'\[\033[1;29m\]' # bold black
 
 # Prompt variable:
 #PS1="$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "
-#PS1="$status_style"'$fill \t\n'"$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "$command_style 
+#PS1="$status_style"'$fill \t\n'"$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "$command_style
 
 #PS1="$status_style"'$fill \t\n'"$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$NO_COLOUR\$ "
 
@@ -32,7 +32,7 @@ command_style=$reset_style'\[\033[1;29m\]' # bold black
 #
 # point to this file in your ~/.bash_profile
 # e.g.:
-# 
+#
 #    # Git prompt
 #    if [ -f "$HOME/.bash_ps1" ]; then
 #     . "$HOME/.bash_ps1"
@@ -97,7 +97,7 @@ PS1="$GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(parse_git_branch)$BRIGHTGREEN\$(parse_git
 trap 'echo -ne "\033[00m"' DEBUG
 
 function prompt_command {
-  
+
   # create a $fill of all screen width minus the time string and a space:
   let fillsize=${COLUMNS}-9
   fill=""
