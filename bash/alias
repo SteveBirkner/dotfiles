@@ -24,6 +24,10 @@ alias gp="git push"
 alias gs="git status"
 alias gl="git log"
 alias gi="git init"
+alias gcl='git clone'
+alias gco='git checkout'
+alias gm='git merge'
+
 
 
 function sbcom() {
